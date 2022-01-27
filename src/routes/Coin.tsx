@@ -39,7 +39,7 @@ const OverviewItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  width: 33%;
   span:first-child {
     font-size: 10px;
     font-weight: 400;
@@ -68,6 +68,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   border-radius: 10px;
   color: ${(props) => (props.isActive ? props.theme.accentColor : props.theme.textColor)};
   a {
+    padding: 7px 0px;
     display: block;
   }
 `;
