@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQuery } from 'react-query';
 import { useParams, useLocation, Switch, Route, Link, useRouteMatch } from 'react-router-dom';
@@ -6,6 +5,7 @@ import styled from 'styled-components';
 import { fetchCoinInfo, fetchCoinTickers } from '../api';
 import Chart from './Chart';
 import Price from './Price';
+import { IoArrowBack } from 'react-icons/io5';
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -21,6 +21,7 @@ const Header = styled.header`
 `;
 
 const Title = styled.h1`
+  font-weight: bold;
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
 `;
@@ -73,6 +74,15 @@ const Tab = styled.span<{ isActive: boolean }>`
   a {
     padding: 7px 0px;
     display: block;
+  }
+`;
+
+const BackIcon = styled(IoArrowBack)`
+  color: ${(props) => props.theme.textColor};
+  margin-top: 20px;
+  &:hover {
+    color: ${(props) => props.theme.accentColor};
+    cursor: pointer;
   }
 `;
 
@@ -139,7 +149,11 @@ interface PriceData {
   };
 }
 
-function Coin() {
+interface ICoinProps {
+  isDark: boolean;
+}
+
+function Coin({ isDark }: ICoinProps) {
   const { coinId } = useParams<RouteParams>();
   const { state } = useLocation<RouteState>();
   const priceMatch = useRouteMatch('/:coinId/price');
@@ -155,6 +169,9 @@ function Coin() {
       <Helmet>
         <title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</title>
       </Helmet>
+      <Link to="/">
+        <BackIcon size="30" />
+      </Link>
       <Header>
         <Title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</Title>
       </Header>
@@ -192,15 +209,15 @@ function Coin() {
               <Link to={`/${coinId}/chart`}>Chart</Link>
             </Tab>
             <Tab isActive={priceMatch !== null}>
-              <Link to={`/${coinId}/price`}>Price</Link>
+              <Link to={{ pathname: `/${coinId}/price` }}>Price</Link>
             </Tab>
           </Tabs>
           <Switch>
             <Route path={`/:coinId/price`}>
-              <Price />
+              <Price USDData={tickersData ? tickersData.quotes.USD : null} />
             </Route>
             <Route path={`/:coinId/chart`}>
-              <Chart coinId={coinId} />
+              <Chart isDark={isDark} coinId={coinId} />
             </Route>
           </Switch>
         </>

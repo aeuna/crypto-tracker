@@ -15,9 +15,10 @@ interface IHistorical {
 
 interface ChartProps {
   coinId: string;
+  isDark: boolean;
 }
 
-function Chart({ coinId }: ChartProps) {
+function Chart({ coinId, isDark }: ChartProps) {
   const { isLoading, data } = useQuery<IHistorical[]>(['ohlcv', coinId], () => fetchCoinHistory(coinId), { refetchInterval: 10000 });
   return (
     <div>
@@ -25,31 +26,26 @@ function Chart({ coinId }: ChartProps) {
         'Loading chart...'
       ) : (
         <ApexChart
-          type="line"
-          series={[{ name: 'Price', data: data?.map((price) => price.close) }]}
+          type="candlestick"
+          series={[
+            {
+              data: data?.map((price) => ({
+                x: price.time_open,
+                y: [price.open.toFixed(2), price.high.toFixed(2), price.low.toFixed(2), price.close.toFixed(2)],
+              })),
+            },
+          ]}
           options={{
-            theme: { mode: 'dark' },
-            chart: { height: 500, width: 500, toolbar: { show: false }, background: 'transparent' },
-            grid: { show: false },
-            stroke: { curve: 'smooth', width: 3 },
-            yaxis: { show: false },
+            theme: { mode: isDark ? 'dark' : 'light' },
+            chart: { type: 'candlestick', height: 500, width: 500, toolbar: { show: false }, background: 'transparent' },
+            title: {
+              text: 'Price Chart (open, high, low, close)',
+              align: 'center',
+            },
             xaxis: {
-              labels: { show: false },
-              axisTicks: { show: false },
-              axisBorder: { show: false },
               type: 'datetime',
-              categories: data?.map((price) => price.time_close),
             },
-            colors: ['#0fbcf9'],
-            fill: {
-              type: 'gradient',
-              gradient: { gradientToColors: ['#0be881'], stops: [0, 100] },
-            },
-            tooltip: {
-              y: {
-                formatter: (value) => `$${value.toFixed(2)}`,
-              },
-            },
+            yaxis: { show: false },
           }}
         />
       )}

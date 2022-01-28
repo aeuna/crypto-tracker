@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useQuery } from 'react-query';
 import { fetchCoins } from '../api';
 import { Helmet } from 'react-helmet';
+import { BsSun, BsMoonStars } from 'react-icons/bs';
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -21,10 +21,11 @@ const Header = styled.header`
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
-  background-color: ${(props) => props.theme.textColor};
-  color: ${(props) => props.theme.bgColor};
+  background-color: ${(props) => props.theme.coinBgColor};
+  color: ${(props) => props.theme.textColor};
   border-radius: 15px;
   margin-bottom: 10px;
+  border: 1px solid #f5f6fa;
   a {
     padding: 20px;
     transition: color 0.2s ease-in;
@@ -39,6 +40,7 @@ const Coin = styled.li`
 `;
 
 const Title = styled.h1`
+  font-weight: bold;
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
 `;
@@ -54,6 +56,15 @@ const Img = styled.img`
   margin-right: 10px;
 `;
 
+const ThemeIcon = styled.div`
+  float: right;
+  margin-top: 20px;
+  &:hover {
+    color: ${(props) => props.theme.accentColor};
+    cursor: pointer;
+  }
+`;
+
 interface ICoin {
   id: string;
   name: string;
@@ -64,7 +75,12 @@ interface ICoin {
   type: string;
 }
 
-function Coins() {
+interface ICoinsProps {
+  isDark: boolean;
+  toggleDark: () => void;
+}
+
+function Coins({ toggleDark, isDark }: ICoinsProps) {
   const { isLoading, data } = useQuery<ICoin[]>('allCoins', fetchCoins);
 
   return (
@@ -72,9 +88,11 @@ function Coins() {
       <Helmet>
         <title>Coin</title>
       </Helmet>
+      <ThemeIcon>{isDark ? <BsMoonStars onClick={toggleDark} size="27" /> : <BsSun onClick={toggleDark} size="27" />}</ThemeIcon>
       <Header>
         <Title>Coin</Title>
       </Header>
+
       {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
