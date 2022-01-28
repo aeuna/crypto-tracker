@@ -213,9 +213,7 @@ function Coin({ isDark }: ICoinProps) {
             </Tab>
           </Tabs>
           <Switch>
-            <Route path={`/:coinId/price`}>
-              <Price USDData={tickersData ? tickersData.quotes.USD : null} />
-            </Route>
+            <Route path={`/:coinId/price`}>{tickersData && <Price USDData={tickersData.quotes.USD} />}</Route>
             <Route path={`/:coinId/chart`}>
               <Chart isDark={isDark} coinId={coinId} />
             </Route>
