@@ -28,11 +28,28 @@ function Chart({ coinId }: ChartProps) {
           type="line"
           series={[{ name: 'Price', data: data?.map((price) => price.close) }]}
           options={{
-            chart: { height: 500, width: 500, toolbar: { show: false } },
+            theme: { mode: 'dark' },
+            chart: { height: 500, width: 500, toolbar: { show: false }, background: 'transparent' },
             grid: { show: false },
             stroke: { curve: 'smooth', width: 3 },
             yaxis: { show: false },
-            xaxis: { labels: { show: false }, axisTicks: { show: false }, axisBorder: { show: false } },
+            xaxis: {
+              labels: { show: false },
+              axisTicks: { show: false },
+              axisBorder: { show: false },
+              type: 'datetime',
+              categories: data?.map((price) => price.time_close),
+            },
+            colors: ['#0fbcf9'],
+            fill: {
+              type: 'gradient',
+              gradient: { gradientToColors: ['#0be881'], stops: [0, 100] },
+            },
+            tooltip: {
+              y: {
+                formatter: (value) => `$${value.toFixed(2)}`,
+              },
+            },
           }}
         />
       )}
