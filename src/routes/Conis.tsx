@@ -4,6 +4,8 @@ import { useQuery } from 'react-query';
 import { fetchCoins } from '../api';
 import { Helmet } from 'react-helmet';
 import { BsSun, BsMoonStars } from 'react-icons/bs';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { isDarkAtom } from '../atoms';
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -75,20 +77,18 @@ interface ICoin {
   type: string;
 }
 
-interface ICoinsProps {
-  isDark: boolean;
-  toggleDark: () => void;
-}
-
-function Coins({ toggleDark, isDark }: ICoinsProps) {
+function Coins() {
+  const isDark = useRecoilValue(isDarkAtom);
   const { isLoading, data } = useQuery<ICoin[]>('allCoins', fetchCoins);
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
 
   return (
     <Container>
       <Helmet>
         <title>Coin</title>
       </Helmet>
-      <ThemeIcon>{isDark ? <BsMoonStars onClick={toggleDark} size="27" /> : <BsSun onClick={toggleDark} size="27" />}</ThemeIcon>
+      <ThemeIcon>{isDark ? <BsMoonStars onClick={toggleDarkAtom} size="27" /> : <BsSun onClick={toggleDarkAtom} size="27" />}</ThemeIcon>
       <Header>
         <Title>Coin</Title>
       </Header>
