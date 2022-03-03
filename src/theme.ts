@@ -10,7 +10,7 @@ export const darkTheme: DefaultTheme = {
 
 export const lightTheme: DefaultTheme = {
   bgColor: 'white',
-  textColor: '#2f3640',
+  textColor: '#303952',
   coinBgColor: '#f5f6fa',
   coinBorderColor: 'rgb(18, 21, 24,0.8)',
   accentColor: 'orange',

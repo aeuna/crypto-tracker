@@ -96,7 +96,7 @@ function Coins() {
         </Helmet>
       </HelmetProvider>
       <Header>
-        bitcoin-tracker
+        <Link to={{ pathname: `/` }}>bitcoin-tracker</Link>
         <Toggle />
       </Header>
       <Title>Today's Coin Ranking</Title>

@@ -24,9 +24,10 @@ const Header = styled.div`
 
 const Title = styled.h1`
   font-weight: bold;
-  font-size: 20px;
+  font-size: 30px;
   margin-bottom: 5px;
   color: ${(props) => props.theme.accentColor};
+  text-align: center;
 `;
 
 const rotateAnimation = keyframes`
@@ -189,7 +190,7 @@ function Coin() {
         </Helmet>
       </HelmetProvider>
       <Header>
-        bitcoin-tracker
+        <Link to={{ pathname: `/` }}>bitcoin-tracker</Link>
         <Link to="/coins">
           <BackIcon size="30" />
         </Link>

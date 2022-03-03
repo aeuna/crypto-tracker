@@ -86,7 +86,7 @@ function Intro() {
         </Helmet>
       </HelmetProvider>
       <Header>
-        bitcoin-tracker
+        <Link to={{ pathname: `/` }}>bitcoin-tracker</Link>
         <Toggle />
       </Header>
       <Wrapper>
