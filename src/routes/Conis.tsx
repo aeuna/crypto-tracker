@@ -27,7 +27,7 @@ const Coin = styled.li`
   color: ${(props) => props.theme.textColor};
   border-radius: 15px;
   margin-bottom: 10px;
-  border: 1px solid #f5f6fa;
+  border: 1px solid ${(props) => props.theme.coinBorderColor};
   a {
     padding: 20px;
     transition: color 0.2s ease-in;
@@ -65,6 +65,7 @@ const rotateAnimation = keyframes`
 
 const Loader = styled.span`
   text-align: center;
+  display: block;
   animation: ${rotateAnimation} 2s linear infinite;
 `;
 

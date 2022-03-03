@@ -1,40 +1,59 @@
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useQuery } from 'react-query';
 import { useParams, useLocation, Switch, Route, Link, useRouteMatch } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { fetchCoinInfo, fetchCoinTickers } from '../api';
 import Chart from './Chart';
 import Price from './Price';
 import { IoArrowBack } from 'react-icons/io5';
 
 const Container = styled.div`
-  padding: 0px 20px;
-  max-width: 480px;
-  margin: 0 auto;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 15px 20px;
 `;
 
-const Header = styled.header`
-  height: 15vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const Header = styled.div`
+  width: 100%;
+  height: 7%;
+  font-size: 40px;
+  font-weight: bold;
 `;
 
 const Title = styled.h1`
   font-weight: bold;
-  font-size: 48px;
+  font-size: 20px;
+  margin-bottom: 5px;
   color: ${(props) => props.theme.accentColor};
 `;
+
+const rotateAnimation = keyframes`
+0% {
+  transform: rotate(0deg);
+  border-radius: 0px;
+ } 
+ 50%{
+  transform: rotate(360deg);
+  border-radius: 100px;
+ }
+ 100% {
+  transform: rotate(0deg);
+  border-radius: 0px;
+ }
+ `;
 
 const Loader = styled.span`
   text-align: center;
   display: block;
+  animation: ${rotateAnimation} 2s linear infinite;
 `;
 
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.coinBgColor};
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -67,7 +86,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-align: center;
   text-transform: uppercase;
   font-size: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.coinBgColor};
   padding: 7px 0px;
   border-radius: 10px;
   color: ${(props) => (props.isActive ? props.theme.accentColor : props.theme.textColor)};
@@ -79,7 +98,9 @@ const Tab = styled.span<{ isActive: boolean }>`
 
 const BackIcon = styled(IoArrowBack)`
   color: ${(props) => props.theme.textColor};
-  margin-top: 20px;
+  margin-top: 10px;
+  float: right;
+  padding: 0px 0px;
   &:hover {
     color: ${(props) => props.theme.accentColor};
     cursor: pointer;
@@ -167,14 +188,17 @@ function Coin() {
           <title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</title>
         </Helmet>
       </HelmetProvider>
-      <Link to="/">
-        <BackIcon size="30" />
-      </Link>
       <Header>
-        <Title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</Title>
+        bitcoin-tracker
+        <Link to="/coins">
+          <BackIcon size="30" />
+        </Link>
       </Header>
+      <Title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</Title>
       {loading ? (
-        <Loader>Loading...</Loader>
+        <Loader>
+          <img src={require('./loader.png')} alt="loader" />
+        </Loader>
       ) : (
         <>
           <Overview>
@@ -204,15 +228,15 @@ function Coin() {
           </Overview>
           <Tabs>
             <Tab isActive={chartMatch !== null}>
-              <Link to={`/${coinId}/chart`}>Chart</Link>
+              <Link to={`/coins/${coinId}/chart`}>Chart</Link>
             </Tab>
             <Tab isActive={priceMatch !== null}>
-              <Link to={{ pathname: `/${coinId}/price` }}>Price</Link>
+              <Link to={{ pathname: `/coins/${coinId}/price` }}>Price</Link>
             </Tab>
           </Tabs>
           <Switch>
-            <Route path={`/:coinId/price`}>{tickersData && <Price USDData={tickersData.quotes.USD} />}</Route>
-            <Route path={`/:coinId/chart`}>
+            <Route path={`/coins/:coinId/price`}>{tickersData && <Price USDData={tickersData.quotes.USD} />}</Route>
+            <Route path={`/coins/:coinId/chart`}>
               <Chart coinId={coinId} />
             </Route>
           </Switch>
