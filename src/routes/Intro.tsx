@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const Container = styled.div`
   width: 100%;
@@ -77,6 +78,11 @@ function Intro() {
 
   return (
     <Container style={{ backgroundImage: `url(${require('./coin.png')})`, backgroundSize: 'cover' }}>
+      <HelmetProvider>
+        <Helmet>
+          <title>bitcoin-tracker</title>
+        </Helmet>
+      </HelmetProvider>
       <Header>bitcoin-tracker</Header>
       <Wrapper>
         <Title>{text}</Title>

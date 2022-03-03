@@ -3,9 +3,11 @@ import Coin from './routes/Coin';
 import Coins from './routes/Conis';
 import Intro from './routes/Intro';
 
+//  basename={process.env.PUBLIC_URL}
+
 function Router() {
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <BrowserRouter>
       <Switch>
         <Route path="/:coinId">
           <Coin />

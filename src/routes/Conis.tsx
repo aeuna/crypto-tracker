@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useQuery } from 'react-query';
 import { fetchCoins } from '../api';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { BsSun, BsMoonStars } from 'react-icons/bs';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { isDarkAtom } from '../atoms';
@@ -85,9 +85,11 @@ function Coins() {
 
   return (
     <Container>
-      <Helmet>
-        <title>Coin</title>
-      </Helmet>
+      <HelmetProvider>
+        <Helmet>
+          <title>Coin</title>
+        </Helmet>
+      </HelmetProvider>
       <ThemeIcon>{isDark ? <BsMoonStars onClick={toggleDarkAtom} size="27" /> : <BsSun onClick={toggleDarkAtom} size="27" />}</ThemeIcon>
       <Header>
         <Title>Coin</Title>

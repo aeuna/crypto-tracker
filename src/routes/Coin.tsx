@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useQuery } from 'react-query';
 import { useParams, useLocation, Switch, Route, Link, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
@@ -162,9 +162,11 @@ function Coin() {
 
   return (
     <Container>
-      <Helmet>
-        <title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</title>
-      </Helmet>
+      <HelmetProvider>
+        <Helmet>
+          <title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</title>
+        </Helmet>
+      </HelmetProvider>
       <Link to="/">
         <BackIcon size="30" />
       </Link>
