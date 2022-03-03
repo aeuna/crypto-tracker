@@ -1,23 +1,23 @@
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { useQuery } from 'react-query';
 import { fetchCoins } from '../api';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { BsSun, BsMoonStars } from 'react-icons/bs';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { isDarkAtom } from '../atoms';
+import Toggle from '../components/Toggle';
 
 const Container = styled.div`
-  padding: 0px 20px;
-  max-width: 480px;
-  margin: 0 auto;
+  width: 100%;
+  height: 105vh;
+  display: flex;
+  flex-direction: column;
+  padding: 15px 20px;
 `;
 
-const Header = styled.header`
-  height: 15vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const Header = styled.div`
+  width: 100%;
+  height: 10%;
+  font-size: 40px;
+  font-weight: bold;
 `;
 
 const CoinsList = styled.ul``;
@@ -43,28 +43,35 @@ const Coin = styled.li`
 
 const Title = styled.h1`
   font-weight: bold;
-  font-size: 48px;
+  font-size: 20px;
+  margin-bottom: 5px;
   color: ${(props) => props.theme.accentColor};
 `;
 
+const rotateAnimation = keyframes`
+0% {
+  transform: rotate(0deg);
+  border-radius: 0px;
+ } 
+ 50%{
+  transform: rotate(360deg);
+  border-radius: 100px;
+ }
+ 100% {
+  transform: rotate(0deg);
+  border-radius: 0px;
+ }
+ `;
+
 const Loader = styled.span`
   text-align: center;
-  display: block;
+  animation: ${rotateAnimation} 2s linear infinite;
 `;
 
 const Img = styled.img`
   width: 35px;
   height: 35px;
   margin-right: 10px;
-`;
-
-const ThemeIcon = styled.div`
-  float: right;
-  margin-top: 20px;
-  &:hover {
-    color: ${(props) => props.theme.accentColor};
-    cursor: pointer;
-  }
 `;
 
 interface ICoin {
@@ -78,10 +85,7 @@ interface ICoin {
 }
 
 function Coins() {
-  const isDark = useRecoilValue(isDarkAtom);
   const { isLoading, data } = useQuery<ICoin[]>('allCoins', fetchCoins);
-  const setDarkAtom = useSetRecoilState(isDarkAtom);
-  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
 
   return (
     <Container>
@@ -90,20 +94,22 @@ function Coins() {
           <title>Coin</title>
         </Helmet>
       </HelmetProvider>
-      <ThemeIcon>{isDark ? <BsMoonStars onClick={toggleDarkAtom} size="27" /> : <BsSun onClick={toggleDarkAtom} size="27" />}</ThemeIcon>
       <Header>
-        <Title>Coin</Title>
+        bitcoin-tracker
+        <Toggle />
       </Header>
-
+      <Title>Today's Coin Ranking</Title>
       {isLoading ? (
-        <Loader>Loading...</Loader>
+        <Loader>
+          <img src={require('./loader.png')} alt="loader" />
+        </Loader>
       ) : (
         <CoinsList>
           {data?.slice(0, 101).map((coin) => (
             <Coin key={coin.id}>
               <Link
                 to={{
-                  pathname: `/${coin.id}`,
+                  pathname: `/coins/${coin.id}`,
                   state: { name: coin.name },
                 }}
               >

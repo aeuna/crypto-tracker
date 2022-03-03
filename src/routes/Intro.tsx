@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import Toggle from '../components/Toggle';
 
 const Container = styled.div`
   width: 100%;
@@ -51,6 +52,7 @@ const Btn = styled.div`
   margin: 0px 10px;
   text-align: center;
   line-height: 50px;
+  border-radius: 5px;
   &:hover {
     cursor: pointer;
     background-color: white;
@@ -83,7 +85,10 @@ function Intro() {
           <title>bitcoin-tracker</title>
         </Helmet>
       </HelmetProvider>
-      <Header>bitcoin-tracker</Header>
+      <Header>
+        bitcoin-tracker
+        <Toggle />
+      </Header>
       <Wrapper>
         <Title>{text}</Title>
         <BtnWrapper>
