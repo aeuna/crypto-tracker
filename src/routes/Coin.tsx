@@ -1,11 +1,12 @@
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useQuery } from 'react-query';
 import { useParams, useLocation, Switch, Route, Link, useRouteMatch } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { fetchCoinInfo, fetchCoinTickers } from '../api';
 import Chart from './Chart';
 import Price from './Price';
 import { IoArrowBack } from 'react-icons/io5';
+import Loader from '../components/Loader';
 
 const Container = styled.div`
   width: 100%;
@@ -28,27 +29,6 @@ const Title = styled.h1`
   margin-bottom: 5px;
   color: ${(props) => props.theme.accentColor};
   text-align: center;
-`;
-
-const rotateAnimation = keyframes`
-0% {
-  transform: rotate(0deg);
-  border-radius: 0px;
- } 
- 50%{
-  transform: rotate(360deg);
-  border-radius: 100px;
- }
- 100% {
-  transform: rotate(0deg);
-  border-radius: 0px;
- }
- `;
-
-const Loader = styled.span`
-  text-align: center;
-  display: block;
-  animation: ${rotateAnimation} 2s linear infinite;
 `;
 
 const Overview = styled.div`
@@ -197,9 +177,7 @@ function Coin() {
       </Header>
       <Title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</Title>
       {loading ? (
-        <Loader>
-          <img src={require('./loader.png')} alt="loader" />
-        </Loader>
+        <Loader />
       ) : (
         <>
           <Overview>

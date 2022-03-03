@@ -79,7 +79,7 @@ function Intro() {
   };
 
   return (
-    <Container style={{ backgroundImage: `url(${require('./coin.png')})`, backgroundSize: 'cover' }}>
+    <Container style={{ backgroundImage: `url(${require('../images/coin.png')})`, backgroundSize: 'cover' }}>
       <HelmetProvider>
         <Helmet>
           <title>bitcoin-tracker</title>

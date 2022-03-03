@@ -3,6 +3,7 @@ import { fetchCoinHistory } from '../api';
 import ApexChart from 'react-apexcharts';
 import { useRecoilValue } from 'recoil';
 import { isDarkAtom } from '../atoms';
+import Loader from '../components/Loader';
 
 interface IHistorical {
   time_open: string;
@@ -25,7 +26,7 @@ function Chart({ coinId }: ChartProps) {
   return (
     <div>
       {isLoading ? (
-        'Loading chart...'
+        <Loader />
       ) : (
         <ApexChart
           type="candlestick"
@@ -39,7 +40,7 @@ function Chart({ coinId }: ChartProps) {
           ]}
           options={{
             theme: { mode: isDark ? 'dark' : 'light' },
-            chart: { type: 'candlestick', height: 500, width: 500, toolbar: { show: false }, background: 'transparent' },
+            chart: { type: 'candlestick', height: 450, width: 450, toolbar: { show: false }, background: 'transparent' },
             title: {
               text: 'Price Chart (open, high, low, close)',
               align: 'center',

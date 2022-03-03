@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { useQuery } from 'react-query';
 import { fetchCoins } from '../api';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Toggle from '../components/Toggle';
+import Loader from '../components/Loader';
 
 const Container = styled.div`
   width: 100%;
@@ -48,27 +49,6 @@ const Title = styled.h1`
   color: ${(props) => props.theme.accentColor};
 `;
 
-const rotateAnimation = keyframes`
-0% {
-  transform: rotate(0deg);
-  border-radius: 0px;
- } 
- 50%{
-  transform: rotate(360deg);
-  border-radius: 100px;
- }
- 100% {
-  transform: rotate(0deg);
-  border-radius: 0px;
- }
- `;
-
-const Loader = styled.span`
-  text-align: center;
-  display: block;
-  animation: ${rotateAnimation} 2s linear infinite;
-`;
-
 const Img = styled.img`
   width: 35px;
   height: 35px;
@@ -101,9 +81,7 @@ function Coins() {
       </Header>
       <Title>Today's Coin Ranking</Title>
       {isLoading ? (
-        <Loader>
-          <img src={require('./loader.png')} alt="loader" />
-        </Loader>
+        <Loader />
       ) : (
         <CoinsList>
           {data?.slice(0, 101).map((coin) => (
